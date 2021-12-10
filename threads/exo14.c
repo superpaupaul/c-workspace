@@ -3,6 +3,8 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <semaphore.h>
+#define P(sem)  (sem_wait(&sem))
+#define V(sem)  (sem_post(&sem))
 int n = 3;
 sem_t sem;
 

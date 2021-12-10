@@ -3,6 +3,8 @@
 #include<pthread.h>
 #include<unistd.h>
 #include<semaphore.h>
+#define P(sem)  (sem_wait(&sem))
+#define V(sem)  (sem_post(&sem))
 
 sem_t m1;
 sem_t m2;
@@ -10,19 +12,19 @@ sem_t m2;
 void *fct_thread1(void *vargp)
 {
     printf("Je ");
-    sem_post(&m2);
-    sem_wait(&m1);
+    V(m2);
+    P(m1);
     printf("mes ");
-    sem_post(&m2);
+    V(m2);
     return 0;
 }
 
 void *fct_thread2(void *vargp)
 {
-    sem_wait(&m2);
+    P(m2);
     printf("synchronise ");
-    sem_post(&m1);
-    sem_wait(&m2);
+    V(m1);
+    P(m2);
     printf("threads\n");
     return 0;
 }
