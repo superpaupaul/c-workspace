@@ -21,8 +21,9 @@ void *lecture_tampon(void *vargp)
         P(occ);
         tampon[j%TBUFFER] = j;
         j++;
-        printf("[Lecture] - j%%TBUFER = %d - j = %d\n",j%TBUFFER,j);
+        printf("[Lecture] - j%%TBUFFER = %d - j = %d\n",j%TBUFFER,j);
         V(lib);
+        sleep(2);
     }
     return 0;
 }
@@ -33,19 +34,19 @@ void *ecrire_tampon(void *vargp)
     while(1)
     {
         P(lib);
+        usleep(mon_rand(10000,1000000));
         tampon[i%TBUFFER] = i;
         i++;
-        printf("[Ecriture] - i%%TBUFER = %d - i = %d\n",i%TBUFFER,i);
+        printf("[Ecriture] - i%%TBUFFER = %d - i = %d\n",i%TBUFFER,i);
         V(occ);
+        sleep(2);
     }
     return 0;
 }
 
 int main()
 {
-    int n = 10;
-    int tab[n];
-    sem_init(&lib,0,n); // 0 car on a un seul processus, 1 car on l'instancie à 1
+    sem_init(&lib,0,TBUFFER); // 0 car on a un seul processus, 1 car on l'instancie à 1
     sem_init(&occ,0,0);
     
     pthread_t tidLecture;
