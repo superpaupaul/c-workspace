@@ -5,42 +5,59 @@
 #include <semaphore.h>
 #define P(sem)  (sem_wait(&sem))
 #define V(sem)  (sem_post(&sem))
-int n = 3;
-sem_t sem;
+#define TBUFFER 10
 
-void *fct_thread(void *vargp)
+
+int tampon[TBUFFER];
+
+sem_t lib;
+sem_t occ;
+
+void *lecture_tampon(void *vargp)
 {
-    sleep(1);
-    printf("[thread %d] Point atteint\n",*(int*)vargp);
-    sem_post(&sem);
+    int j = 0;
+    while(1)
+    {
+        P(occ);
+        tampon[j%TBUFFER] = j;
+        j++;
+        printf("[Lecture] - j%%TBUFER = %d - j = %d\n",j%TBUFFER,j);
+        V(lib);
+    }
     return 0;
 }
 
-void *barrier_thread(void *vargp)
+void *ecrire_tampon(void *vargp)
 {
-    printf("[b_thread] Barrière atteinte, en attente...\n");
-    for(int i = 0; i < n; i++)
+    int i = 0;
+    while(1)
     {
-        sem_wait(&sem);
+        P(lib);
+        tampon[i%TBUFFER] = i;
+        i++;
+        printf("[Ecriture] - i%%TBUFER = %d - i = %d\n",i%TBUFFER,i);
+        V(occ);
     }
-    sem_wait(&sem);
-    
-    printf("[b_thread] Je peux continuer !\n");
     return 0;
 }
 
 int main()
 {
-    sem_init(&sem,0,1); // 0 car on a un seul processus, 1 car on l'instancie à 1
-    pthread_t tids;
-    pthread_t tidBarrier;
+    int n = 10;
+    int tab[n];
+    sem_init(&lib,0,n); // 0 car on a un seul processus, 1 car on l'instancie à 1
+    sem_init(&occ,0,0);
+    
+    pthread_t tidLecture;
+    pthread_t tidEcriture;
 
-    for(int i = 0; i < n; i++)
-    {
-        pthread_create(&tids,NULL,fct_thread,(void*)&tids);
-    }
-    pthread_create(&tidBarrier,NULL,barrier_thread,(void*)&tids);
-    sem_destroy(&sem);
+    pthread_create(&tidLecture,NULL,lecture_tampon,(void*)&tidLecture);
+    pthread_create(&tidEcriture,NULL,ecrire_tampon,(void*)&tidEcriture);
+
+
+
+    sem_destroy(&lib);
+    sem_destroy(&occ);
     pthread_exit(NULL);
     return 0;
 }
