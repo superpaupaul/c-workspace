@@ -37,7 +37,7 @@ int main()
 
     pthread_create(&tid1,NULL,fct_thread1,(void*)&tid1);
     pthread_create(&tid2,NULL,fct_thread2,(void*)&tid2);
-    
+
     pthread_exit(NULL);
     return 0;
 }
