@@ -53,6 +53,8 @@ int main(int argc, char **argv)
     fclose(f); // Fermeture du descripteur de fichier
 
     printf("%d mots chargés\n",nbmots);
+    // char * test = "dentifrice";
+    // printf("%d comparaisons\n",chercheMotTabH(&th,test));
 
 /******************************************************************************/
 /* STATISTIQUES                                                               */
@@ -62,6 +64,45 @@ int main(int argc, char **argv)
 /*   - la longueur moyenne des LC non vides                                   */
 /*   - le pourcentage de LC vides                                             */
 /*   - le pourcentage de LC contenant au plus 2 mots                          */
+    int longueur_max = 0;
+    int somme_longueurs = 0;
+    int nombre_lc = th.taille;
+    int nombre_listes_vides = 0;
+    int nombre_listes_plus_de_2_mots = 0;
+
+    for(int i = 0; i < nombre_lc; i++)
+    {
+        Cellule* cell = th.tab[i];
+        int taille_lc = 0;
+        
+        while(cell)
+        {
+            taille_lc++;
+            cell = cell->suiv;
+        }
+
+        somme_longueurs += taille_lc;
+        if(taille_lc > longueur_max)
+            longueur_max = taille_lc;
+
+        if(taille_lc == 1)
+            nombre_listes_vides++;
+        else if(taille_lc <= 3)
+            nombre_listes_plus_de_2_mots++;
+    }
+
+    float longueur_moyenne = somme_longueurs / (float)nombre_lc;
+    float pourcentage_listes_vides = ((float) (nombre_lc - nombre_listes_vides) / (float) nombre_lc) * 100.0;
+    float pourcentage_listes_plus_de_2_mots = ((float) (nombre_lc - nombre_listes_plus_de_2_mots) / (float) nombre_lc) * 100.0;
+    
+    printf("Longueur max des listes : %d\n",longueur_max);
+    printf("Longueur moyenne des listes : %f\n",longueur_moyenne);
+    printf("Pourcentage de listes vides : %f% \n",pourcentage_listes_vides);
+    printf("Pourcentage de listes contenant au plus 2 mots : %f% \n",pourcentage_listes_plus_de_2_mots);
+
+
+
+
 
     return 0;
 }

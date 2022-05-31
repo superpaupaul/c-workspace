@@ -83,6 +83,16 @@ int main(int argc, char **argv)
         }
 
 
+    printf("Combinaisons possibles\n");
+    for(int i = 0; i < nbcombi; i++)
+    {
+        char* mot = combi[i];
+        int chercheMot = chercheMotTabH(&th,mot);
+        if(chercheMot > 0)
+        {
+            printf("%s\n",mot);
+        }
+    }
 
     return 0;
     }

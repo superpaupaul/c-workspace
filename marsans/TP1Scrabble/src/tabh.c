@@ -21,6 +21,9 @@ int initTabH(TabH *th, int taille)
 void ajouteMotTabH(TabH *th, char *mot)
     {
     unsigned long long int h; // reçoit le résultat du hachage
+    unsigned int taille = th->taille;
+    h = hachage(mot);
+    th->tab[h%taille] = ajouteEnTeteLC(th->tab[h%taille],mot);
 /* ICI VOUS HACHEZ LE MOT LU AFIN D'OBTENIR UN INDICE DANS LA TABLE           */
 /* PUIS VOUS AJOUTEZ CE MOT DANS LA LC SE TROUVANT A CET INDICE.              */
 
@@ -33,13 +36,15 @@ void ajouteMotTabH(TabH *th, char *mot)
 /******************************************************************************/
 int chercheMotTabH(TabH *th, char *mot)
     {
-    unsigned long long int h;
+    unsigned long long int h;    
 /******************************************************************************/
 /* ICI, VOUS HACHEZ LE MOT RECU ET RECHERCHEZ CE MOT DANS LA BONNE LISTE      */
 /* CHAINEE DE VOTRE TABLE DE HACHAGE                                          */
 /******************************************************************************/
-
-    return 0; // à modifier
+    h = hachage(mot);
+    unsigned int taille = th->taille;
+    int res = chercheMotLC(th->tab[h%taille],mot);
+    return res; 
     }
 
 /******************************************************************************/
@@ -47,9 +52,24 @@ int chercheMotTabH(TabH *th, char *mot)
 /******************************************************************************/
 unsigned long long int hachage(char *mot)
 {
-    unsigned long long int som=0, unite;
-    int base; // base dans laquelle on calcule
-
+    unsigned long long int som=0, unite=1;
+    int base = 26; // base dans laquelle on calcule
+    size_t i = 0;
+    while(mot[i] != '\0')
+    {
+        som += (mot[i] - 'a') * unite;
+        unite *= base;
+        i++;
+    }
     return som;
+    // size_t i = 0;    
+    // while(mot[i] != '\0')
+    // {        
+    //     som += mot[i] - 'a' + 1;
+    //     i++;
+    // }
+
+    // return som;
+
 }
 
