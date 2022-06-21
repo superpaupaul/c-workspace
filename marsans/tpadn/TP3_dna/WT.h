@@ -18,9 +18,10 @@
 /******************************************************************************/
 typedef struct noeud {
     struct noeud *fils[5];
+    int            * tabFlags[5];
     Cellule      * cell;    
     char            term;
-    } Noeud;
+}Noeud;
 
 
 
@@ -32,9 +33,9 @@ typedef struct noeud {
 /* Crée un nouveau noeud                                                      */
 Noeud *nouveauNoeud();
 /* Ajoute un mot dans l'arbre                                                 */
-void ajouteMotArbre(Noeud *racine,char *str, int prof);
+void ajouteMotArbre(Noeud *racine,char *str, int prof, int index, int id_seq);
 /* Cherche un mot dans l'arbre                                                */
-int chercheMotArbre(Noeud *racine,char *str);
+Noeud* chercheMotArbre(Noeud *racine,char *str,int cmpt);
 
 
 

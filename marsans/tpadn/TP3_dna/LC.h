@@ -13,7 +13,9 @@
 /* STRUCTURES                                                                 */
 /******************************************************************************/
 typedef struct cellule {
-    char *mot;
+    char mot; // INDEX pour DEFI C
+    int index; 
+    int seq_id;
     struct cellule * suiv;
     } Cellule;
 
@@ -21,8 +23,8 @@ typedef struct cellule {
 /******************************************************************************/
 /* PROTOTYPES                                                                 */
 /******************************************************************************/
-Cellule *nouvelleCellule(char *mot);
-Cellule *ajouteEnTeteLC(Cellule *l, char *mot);
+Cellule *nouvelleCellule(int index,int id_seq);
+Cellule *ajouteEnTeteLC(Cellule *l, int index,int id_seq);
 void afficheLC(Cellule *l);
 int  chercheMotLC(Cellule *l, char *mot); // renvoie le nb de comparaisons, <=0 si pas trouvé
 

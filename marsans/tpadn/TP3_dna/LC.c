@@ -7,21 +7,24 @@
 /******************************************************************************/
 /* nouvelleCellule                                                            */
 /******************************************************************************/
-Cellule * nouvelleCellule(char *mot)
+Cellule * nouvelleCellule(int index,int id_seq)
 {
    Cellule *c = (Cellule *) malloc(sizeof(Cellule)); // allocation cellule
    c->suiv = NULL; // par sécurité, la cellule n'a pas de suivant
-   c->mot = (char *)malloc(strlen(mot)+1); // allocation mot
-   strcpy(c->mot, mot); // copie du mot
+   c->index = index;
+   c->seq_id = id_seq;
+   //c->mot = (char *)malloc(strlen(mot)+1); // allocation mot
+   //strcpy(c->mot, mot); // copie du mot
    return c;
 }
 
 /******************************************************************************/
 /* ajouteMotLC                                                                */
 /******************************************************************************/
-Cellule * ajouteEnTeteLC(Cellule *l, char *mot)
+Cellule * ajouteEnTeteLC(Cellule *l, int index, int id_seq)
 {
-	Cellule *c = nouvelleCellule(mot);
+
+	Cellule *c = nouvelleCellule(index, id_seq);
    c->suiv = l;
    return c;                                        
 }
@@ -35,7 +38,7 @@ void afficheLC(Cellule *l)
    {
       return;
    }
-   printf("%s\n",l->mot);
+   printf("SEQ:%d / POS: %d\n",l->seq_id, l->index);
    afficheLC(l->suiv);
 /* ICI VOTRE CODE (10 lignes)                                                 */
 }
